@@ -1,11 +1,9 @@
-
-app.py
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Calculadora Vial", page_icon="🛣️", layout="wide")
+st.set_page_config(page_title="Calculadora Vial SEACE", page_icon="🛣️", layout="wide")
 
-html = """
+html_code = """
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,39 +55,39 @@ tfoot tr:last-child { background: linear-gradient(135deg, #667eea 0%, #764ba2 10
       <option value="señalizacion">🚦 Señalización</option>
       <option value="obras_arte">🏛️ Obras de Arte</option>
     </select>
-    <input id="buscar" placeholder="🔍 Buscar partida por código o nombre...">
+    <input id="buscar" placeholder="🔍 Buscar partida...">
     <select id="sel" size="8" style="height:250px;"></select>
     <input id="met" type="number" placeholder="Metrado (cantidad)" min="0" step="0.01">
-    <button onclick="agregar()" class="btn-success">➕ Agregar al Presupuesto</button>
+    <button onclick="agregar()" class="btn-success">➕ Agregar</button>
   </div>
 
   <div class="card">
-    <h2>💰 Resumen Financiero</h2>
+    <h2>💰 Resumen</h2>
     <div class="metric"><div class="metric-label">Costo Directo</div><div class="metric-value" id="cd">S/ 0</div></div>
-    <div class="metric"><div class="metric-label">Total + GG + Util</div><div class="metric-value" id="tot">S/ 0</div></div>
+    <div class="metric"><div class="metric-label">Total</div><div class="metric-value" id="tot">S/ 0</div></div>
     <div class="metric"><div class="metric-label">Partidas</div><div class="metric-value" id="num">0</div></div>
   </div>
 
   <div class="card" id="apu" style="display:none;">
-    <h2>🔍 Análisis Unitario</h2>
+    <h2>🔍 APU</h2>
     <div id="apuCont"></div>
   </div>
 </div>
 
 <div class="card">
-  <h2>📊 Presupuesto Detallado</h2>
+  <h2>📊 Presupuesto</h2>
   <div class="btns">
     <button onclick="csv()" class="btn-success">📥 CSV</button>
     <button onclick="pdf()">📄 PDF</button>
     <button onclick="limpiar()" class="btn-danger">🗑️ Limpiar</button>
   </div>
   <table>
-    <thead><tr><th>Partida</th><th>Und</th><th>Metrado</th><th>P.U.</th><th>Parcial</th><th>Acción</th></tr></thead>
-    <tbody id="tb"><tr><td colspan="6" style="text-align:center;color:#999;padding:30px;">Sin partidas. Agrega arriba.</td></tr></tbody>
+    <thead><tr><th>Partida</th><th>Und</th><th>Metrado</th><th>P.U.</th><th>Parcial</th><th></th></tr></thead>
+    <tbody id="tb"><tr><td colspan="6" style="text-align:center;color:#999;padding:30px;">Sin partidas</td></tr></tbody>
     <tfoot>
       <tr><td colspan="4">COSTO DIRECTO</td><td id="td1">S/ 0.00</td><td></td></tr>
       <tr><td colspan="4">GG (10%)</td><td id="td2">S/ 0.00</td><td></td></tr>
-      <tr><td colspan="4">Utilidad (8%)</td><td id="td3">S/ 0.00</td><td></td></tr>
+      <tr><td colspan="4">Util (8%)</td><td id="td3">S/ 0.00</td><td></td></tr>
       <tr><td colspan="4">TOTAL</td><td id="td4">S/ 0.00</td><td></td></tr>
     </tfoot>
   </table>
@@ -97,7 +95,7 @@ tfoot tr:last-child { background: linear-gradient(135deg, #667eea 0%, #764ba2 10
 </div>
 
 <script>
-const DB=[{cat:'preliminares',cod:'101.01',nom:'Movilización y desmovilización equipos',u:'glb',p:45000,apu:{mo:8500,eq:32000,mat:4500}},{cat:'preliminares',cod:'102.01',nom:'Topografía y georeferenciación',u:'km',p:2500,apu:{mo:1200,eq:900,mat:400}},{cat:'preliminares',cod:'103.01',nom:'Campamento provisional obra',u:'mes',p:12000,apu:{mo:4500,eq:2500,mat:5000}},{cat:'preliminares',cod:'104.01',nom:'Cartel obra 3.60x7.20m',u:'und',p:3500,apu:{mo:450,eq:250,mat:2800}},{cat:'preliminares',cod:'105.01',nom:'Mantenimiento tránsito temporal',u:'mes',p:8500,apu:{mo:5200,eq:1800,mat:1500}},{cat:'preliminares',cod:'106.01',nom:'Nivelación y replanteo',u:'km',p:1800,apu:{mo:950,eq:600,mat:250}},{cat:'movimiento',cod:'201.01',nom:'Desbroce y limpieza',u:'ha',p:8500,apu:{mo:2800,eq:5200,mat:500}},{cat:'movimiento',cod:'202.01',nom:'Excavación no clasificada',u:'m³',p:18.50,apu:{mo:4.20,eq:13.80,mat:0.50}},{cat:'movimiento',cod:'203.01',nom:'Excavación en roca suelta',u:'m³',p:38.20,apu:{mo:8.50,eq:28.20,mat:1.50}},{cat:'movimiento',cod:'204.01',nom:'Excavación en roca fija',u:'m³',p:62.00,apu:{mo:12.00,eq:45.00,mat:5.00}},{cat:'movimiento',cod:'205.01',nom:'Conformación terraplenes',u:'m³',p:22.40,apu:{mo:5.80,eq:15.60,mat:1.00}},{cat:'movimiento',cod:'206.01',nom:'Perfilado y compactado subrasante',u:'m²',p:3.80,apu:{mo:0.95,eq:2.65,mat:0.20}},{cat:'movimiento',cod:'207.01',nom:'Mejoramiento suelos cal 3%',u:'m³',p:85.00,apu:{mo:18.50,eq:32.50,mat:34.00}},{cat:'movimiento',cod:'208.01',nom:'Eliminación material excedente d<1km',u:'m³',p:12.50,apu:{mo:2.80,eq:9.20,mat:0.50}},{cat:'movimiento',cod:'208.02',nom:'Eliminación material excedente d>1km',u:'m³-km',p:4.20,apu:{mo:0.95,eq:3.10,mat:0.15}},{cat:'movimiento',cod:'209.01',nom:'Relleno compactado material propio',u:'m³',p:28.50,apu:{mo:7.20,eq:19.80,mat:1.50}},{cat:'movimiento',cod:'210.01',nom:'Corte en material suelto',u:'m³',p:15.80,apu:{mo:3.50,eq:11.80,mat:0.50}},{cat:'movimiento',cod:'211.01',nom:'Escarificado 0.20m',u:'m²',p:2.80,apu:{mo:0.60,eq:2.10,mat:0.10}},{cat:'pavimentos',cod:'401.01',nom:'Capa anticontaminante e=0.15m',u:'m³',p:35.00,apu:{mo:8.50,eq:14.50,mat:12.00}},{cat:'pavimentos',cod:'402.01',nom:'Sub-base granular e=0.20m',u:'m³',p:72.50,apu:{mo:15.80,eq:28.70,mat:28.00}},{cat:'pavimentos',cod:'403.01',nom:'Base granular e=0.25m',u:'m³',p:85.50,apu:{mo:18.50,eq:32.00,mat:35.00}},{cat:'pavimentos',cod:'404.01',nom:'Base estabilizada cemento 3%',u:'m³',p:165.00,apu:{mo:35.00,eq:58.00,mat:72.00}},{cat:'pavimentos',cod:'405.01',nom:'Base asfáltica e=0.10m',u:'m³',p:320.00,apu:{mo:55.00,eq:125.00,mat:140.00}},{cat:'pavimentos',cod:'406.01',nom:'Imprimación asfáltica',u:'m²',p:4.80,apu:{mo:0.85,eq:1.75,mat:2.20}},{cat:'pavimentos',cod:'407.01',nom:'Riego liga asfalto diluido',u:'m²',p:2.20,apu:{mo:0.45,eq:0.80,mat:0.95}},{cat:'pavimentos',cod:'408.01',nom:'Tratamiento superficial monocapa',u:'m²',p:18.50,apu:{mo:3.50,eq:6.80,mat:8.20}},{cat:'pavimentos',cod:'409.01',nom:'Tratamiento superficial bicapa',u:'m²',p:28.00,apu:{mo:5.80,eq:10.20,mat:12.00}},{cat:'pavimentos',cod:'410.01',nom:'Sello asfáltico tipo slurry',u:'m²',p:12.00,apu:{mo:2.20,eq:4.50,mat:5.30}},{cat:'pavimentos',cod:'411.01',nom:'Sello fisuras asfalto caliente',u:'m',p:3.50,apu:{mo:0.80,eq:1.20,mat:1.50}},{cat:'pavimentos',cod:'412.01',nom:'Sello grietas c/geomalla',u:'m',p:15.00,apu:{mo:3.20,eq:2.80,mat:9.00}},{cat:'pavimentos',cod:'413.01',nom:'Parchado superficial MAC',u:'m²',p:42.00,apu:{mo:8.50,eq:15.50,mat:18.00}},{cat:'pavimentos',cod:'414.01',nom:'Parchado profundo base+MAC',u:'m²',p:85.00,apu:{mo:18.00,eq:32.00,mat:35.00}},{cat:'pavimentos',cod:'415.01',nom:'Fresado pavimento asfaltico e=5cm',u:'m²',p:12.50,apu:{mo:2.50,eq:9.20,mat:0.80}},{cat:'pavimentos',cod:'416.01',nom:'Pavimento concreto asfaltico caliente e=5cm',u:'m³',p:920.00,apu:{mo:180.00,eq:420.00,mat:320.00}},{cat:'pavimentos',cod:'416.02',nom:'Pavimento concreto asfaltico caliente e=7.5cm',u:'m³',p:920.00,apu:{mo:180.00,eq:420.00,mat:320.00}},{cat:'pavimentos',cod:'416.03',nom:'Pavimento concreto asfaltico caliente e=10cm',u:'m³',p:920.00,apu:{mo:180.00,eq:420.00,mat:320.00}},{cat:'pavimentos',cod:'417.01',nom:'MAC modificado polimeros e=5cm',u:'m³',p:1250.00,apu:{mo:225.00,eq:525.00,mat:500.00}},{cat:'pavimentos',cod:'418.01',nom:'MAC reciclado 20% RAP e=7cm',u:'m³',p:780.00,apu:{mo:155.00,eq:365.00,mat:260.00}},{cat:'drenaje',cod:'501.01',nom:'Excavación estructuras material común',u:'m³',p:28.00,apu:{mo:6.50,eq:20.00,mat:1.50}},{cat:'drenaje',cod:'502.01',nom:'Excavación estructuras en roca',u:'m³',p:55.00,apu:{mo:11.00,eq:40.00,mat:4.00}},{cat:'drenaje',cod:'503.01',nom:'Relleno estructuras material propio',u:'m³',p:25.00,apu:{mo:6.00,eq:17.50,mat:1.50}},{cat:'drenaje',cod:'504.01',nom:'Alcantarilla TMC Ø36" L=6m',u:'m',p:380.00,apu:{mo:85.00,eq:120.00,mat:175.00}},{cat:'drenaje',cod:'504.02',nom:'Alcantarilla TMC Ø48" L=6m',u:'m',p:520.00,apu:{mo:115.00,eq:155.00,mat:250.00}},{cat:'drenaje',cod:'505.01',nom:'Alcantarilla marco concreto 1.00x1.00m',u:'m',p:850.00,apu:{mo:245.00,eq:185.00,mat:420.00}},{cat:'drenaje',cod:'506.01',nom:'Cabezal alcantarilla TMC tipo I',u:'und',p:2500,apu:{mo:680.00,eq:520.00,mat:1300}},{cat:'drenaje',cod:'507.01',nom:'Subdrén Ø4" PVC + filtro',u:'m',p:45.00,apu:{mo:12.00,eq:8.50,mat:24.50}},{cat:'drenaje',cod:'508.01',nom:'Cunetas triangulares sin revestir',u:'m',p:8.00,apu:{mo:2.20,eq:5.30,mat:0.50}},{cat:'drenaje',cod:'509.01',nom:'Cunetas revestidas concreto fc=175',u:'m',p:42.00,apu:{mo:12.50,eq:8.50,mat:21.00}},{cat:'obras_arte',cod:'601.01',nom:'Mampostería piedra',u:'m³',p:280.00,apu:{mo:95.00,eq:35.00,mat:150.00}},{cat:'obras_arte',cod:'602.01',nom:'Muro concreto ciclopeo fc=175+30%PG',u:'m³',p:320.00,apu:{mo:105.00,eq:45.00,mat:170.00}},{cat:'obras_arte',cod:'603.01',nom:'Muro concreto armado fc=210',u:'m³',p:650.00,apu:{mo:220.00,eq:130.00,mat:300.00}},{cat:'obras_arte',cod:'604.01',nom:'Gaviones caja 2x1x1m',u:'m³',p:180.00,apu:{mo:52.00,eq:28.00,mat:100.00}},{cat:'obras_arte',cod:'604.02',nom:'Gaviones colchón 0.30m',u:'m²',p:95.00,apu:{mo:28.00,eq:15.00,mat:52.00}},{cat:'obras_arte',cod:'605.01',nom:'Defensas ribereñas enrocado',u:'m³',p:85.00,apu:{mo:22.00,eq:48.00,mat:15.00}},{cat:'obras_arte',cod:'606.01',nom:'Demolición concreto simple',u:'m³',p:45.00,apu:{mo:12.00,eq:31.00,mat:2.00}},{cat:'obras_arte',cod:'606.02',nom:'Demolición concreto armado',u:'m³',p:85.00,apu:{mo:22.00,eq:60.00,mat:3.00}},{cat:'obras_arte',cod:'607.01',nom:'Geomalla biaxial 40kN/m',u:'m²',p:12.50,apu:{mo:2.50,eq:0.80,mat:9.20}},{cat:'obras_arte',cod:'608.01',nom:'Geotextil NT-2000',u:'m²',p:4.80,apu:{mo:0.80,eq:0.20,mat:3.80}},{cat:'señalizacion',cod:'801.01',nom:'Señal vertical reglamentaria 0.60x0.60m',u:'und',p:280.00,apu:{mo:52.00,eq:28.00,mat:200.00}},{cat:'señalizacion',cod:'801.02',nom:'Señal vertical preventiva 0.75x0.75m',u:'und',p:320.00,apu:{mo:58.00,eq:32.00,mat:230.00}},{cat:'señalizacion',cod:'801.03',nom:'Señal informativa 2.40x1.20m',u:'und',p:1200,apu:{mo:225.00,eq:125.00,mat:850.00}},{cat:'señalizacion',cod:'802.01',nom:'Poste soporte señal Ø2" h=3m',u:'und',p:180.00,apu:{mo:42.00,eq:28.00,mat:110.00}},{cat:'señalizacion',cod:'803.01',nom:'Marcas pavimento pintura tráfico',u:'m',p:1.80,apu:{mo:0.35,eq:0.65,mat:0.80}},{cat:'señalizacion',cod:'804.01',nom:'Símbolos y leyendas pavimento',u:'m²',p:28.50,apu:{mo:5.80,eq:8.70,mat:14.00}},{cat:'señalizacion',cod:'805.01',nom:'Tachas reflectivas',u:'und',p:18.00,apu:{mo:2.50,eq:1.50,mat:14.00}},{cat:'señalizacion',cod:'806.01',nom:'Delineadores',u:'und',p:95.00,apu:{mo:18.00,eq:12.00,mat:65.00}},{cat:'señalizacion',cod:'807.01',nom:'Guardavías metálico',u:'m',p:180.00,apu:{mo:38.00,eq:32.00,mat:110.00}}];
+const DB=[{cat:'preliminares',cod:'101.01',nom:'Movilización equipos',u:'glb',p:45000,apu:{mo:8500,eq:32000,mat:4500}},{cat:'preliminares',cod:'102.01',nom:'Topografía',u:'km',p:2500,apu:{mo:1200,eq:900,mat:400}},{cat:'preliminares',cod:'103.01',nom:'Campamento',u:'mes',p:12000,apu:{mo:4500,eq:2500,mat:5000}},{cat:'preliminares',cod:'104.01',nom:'Cartel obra',u:'und',p:3500,apu:{mo:450,eq:250,mat:2800}},{cat:'preliminares',cod:'105.01',nom:'Mantenimiento tránsito',u:'mes',p:8500,apu:{mo:5200,eq:1800,mat:1500}},{cat:'movimiento',cod:'201.01',nom:'Desbroce',u:'ha',p:8500,apu:{mo:2800,eq:5200,mat:500}},{cat:'movimiento',cod:'202.01',nom:'Excavación no clasificada',u:'m³',p:18.50,apu:{mo:4.20,eq:13.80,mat:0.50}},{cat:'movimiento',cod:'203.01',nom:'Excavación roca suelta',u:'m³',p:38.20,apu:{mo:8.50,eq:28.20,mat:1.50}},{cat:'movimiento',cod:'204.01',nom:'Excavación roca fija',u:'m³',p:62.00,apu:{mo:12.00,eq:45.00,mat:5.00}},{cat:'movimiento',cod:'205.01',nom:'Conformación terraplenes',u:'m³',p:22.40,apu:{mo:5.80,eq:15.60,mat:1.00}},{cat:'movimiento',cod:'206.01',nom:'Perfilado subrasante',u:'m²',p:3.80,apu:{mo:0.95,eq:2.65,mat:0.20}},{cat:'movimiento',cod:'207.01',nom:'Mejoramiento suelos',u:'m³',p:85.00,apu:{mo:18.50,eq:32.50,mat:34.00}},{cat:'movimiento',cod:'208.01',nom:'Eliminación material',u:'m³',p:12.50,apu:{mo:2.80,eq:9.20,mat:0.50}},{cat:'pavimentos',cod:'401.01',nom:'Capa anticontaminante',u:'m³',p:35.00,apu:{mo:8.50,eq:14.50,mat:12.00}},{cat:'pavimentos',cod:'402.01',nom:'Sub-base granular',u:'m³',p:72.50,apu:{mo:15.80,eq:28.70,mat:28.00}},{cat:'pavimentos',cod:'403.01',nom:'Base granular',u:'m³',p:85.50,apu:{mo:18.50,eq:32.00,mat:35.00}},{cat:'pavimentos',cod:'404.01',nom:'Base cemento',u:'m³',p:165.00,apu:{mo:35.00,eq:58.00,mat:72.00}},{cat:'pavimentos',cod:'405.01',nom:'Base asfáltica',u:'m³',p:320.00,apu:{mo:55.00,eq:125.00,mat:140.00}},{cat:'pavimentos',cod:'406.01',nom:'Imprimación',u:'m²',p:4.80,apu:{mo:0.85,eq:1.75,mat:2.20}},{cat:'pavimentos',cod:'407.01',nom:'Riego liga',u:'m²',p:2.20,apu:{mo:0.45,eq:0.80,mat:0.95}},{cat:'pavimentos',cod:'408.01',nom:'Tratamiento monocapa',u:'m²',p:18.50,apu:{mo:3.50,eq:6.80,mat:8.20}},{cat:'pavimentos',cod:'409.01',nom:'Tratamiento bicapa',u:'m²',p:28.00,apu:{mo:5.80,eq:10.20,mat:12.00}},{cat:'pavimentos',cod:'410.01',nom:'Sello slurry',u:'m²',p:12.00,apu:{mo:2.20,eq:4.50,mat:5.30}},{cat:'pavimentos',cod:'415.01',nom:'Fresado 5cm',u:'m²',p:12.50,apu:{mo:2.50,eq:9.20,mat:0.80}},{cat:'pavimentos',cod:'416.01',nom:'MAC e=5cm',u:'m³',p:920.00,apu:{mo:180.00,eq:420.00,mat:320.00}},{cat:'pavimentos',cod:'416.02',nom:'MAC e=7.5cm',u:'m³',p:920.00,apu:{mo:180.00,eq:420.00,mat:320.00}},{cat:'pavimentos',cod:'416.03',nom:'MAC e=10cm',u:'m³',p:920.00,apu:{mo:180.00,eq:420.00,mat:320.00}},{cat:'drenaje',cod:'501.01',nom:'Excavación estructuras',u:'m³',p:28.00,apu:{mo:6.50,eq:20.00,mat:1.50}},{cat:'drenaje',cod:'502.01',nom:'Excavación roca',u:'m³',p:55.00,apu:{mo:11.00,eq:40.00,mat:4.00}},{cat:'drenaje',cod:'504.01',nom:'Alcantarilla TMC 36"',u:'m',p:380.00,apu:{mo:85.00,eq:120.00,mat:175.00}},{cat:'drenaje',cod:'504.02',nom:'Alcantarilla TMC 48"',u:'m',p:520.00,apu:{mo:115.00,eq:155.00,mat:250.00}},{cat:'drenaje',cod:'505.01',nom:'Alcantarilla concreto',u:'m',p:850.00,apu:{mo:245.00,eq:185.00,mat:420.00}},{cat:'drenaje',cod:'508.01',nom:'Cunetas triangulares',u:'m',p:8.00,apu:{mo:2.20,eq:5.30,mat:0.50}},{cat:'drenaje',cod:'509.01',nom:'Cunetas concreto',u:'m',p:42.00,apu:{mo:12.50,eq:8.50,mat:21.00}},{cat:'obras_arte',cod:'601.01',nom:'Mampostería',u:'m³',p:280.00,apu:{mo:95.00,eq:35.00,mat:150.00}},{cat:'obras_arte',cod:'602.01',nom:'Concreto ciclopeo',u:'m³',p:320.00,apu:{mo:105.00,eq:45.00,mat:170.00}},{cat:'obras_arte',cod:'603.01',nom:'Concreto armado',u:'m³',p:650.00,apu:{mo:220.00,eq:130.00,mat:300.00}},{cat:'obras_arte',cod:'604.01',nom:'Gaviones',u:'m³',p:180.00,apu:{mo:52.00,eq:28.00,mat:100.00}},{cat:'obras_arte',cod:'607.01',nom:'Geomalla',u:'m²',p:12.50,apu:{mo:2.50,eq:0.80,mat:9.20}},{cat:'obras_arte',cod:'608.01',nom:'Geotextil',u:'m²',p:4.80,apu:{mo:0.80,eq:0.20,mat:3.80}},{cat:'señalizacion',cod:'801.01',nom:'Señal reglamentaria',u:'und',p:280.00,apu:{mo:52.00,eq:28.00,mat:200.00}},{cat:'señalizacion',cod:'801.02',nom:'Señal preventiva',u:'und',p:320.00,apu:{mo:58.00,eq:32.00,mat:230.00}},{cat:'señalizacion',cod:'803.01',nom:'Marcas pavimento',u:'m',p:1.80,apu:{mo:0.35,eq:0.65,mat:0.80}},{cat:'señalizacion',cod:'805.01',nom:'Tachas',u:'und',p:18.00,apu:{mo:2.50,eq:1.50,mat:14.00}},{cat:'señalizacion',cod:'807.01',nom:'Guardavías',u:'m',p:180.00,apu:{mo:38.00,eq:32.00,mat:110.00}}];
 
 let pres=[];
 
@@ -138,14 +136,14 @@ document.getElementById('sel').onchange=function(){
   const mo=((p.apu.mo/p.p)*100).toFixed(1);
   const eq=((p.apu.eq/p.p)*100).toFixed(1);
   const ma=((p.apu.mat/p.p)*100).toFixed(1);
-  document.getElementById('apuCont').innerHTML='<div class="apu"><div style="font-size:24px;font-weight:bold;">S/ '+p.p.toFixed(2)+'</div><div style="opacity:0.9;">Precio Unitario</div></div><div style="margin:10px 0;"><strong>'+p.cod+'</strong> - '+p.nom+'</div><div style="color:#666;margin:5px 0;">Unidad: '+p.u+'</div><div style="background:#f0f0f0;padding:10px;border-radius:5px;margin:10px 0;"><div style="display:flex;justify-content:space-between;"><span>👷 Mano Obra</span><strong>S/ '+p.apu.mo.toFixed(2)+' ('+mo+'%)</strong></div></div><div style="background:#f0f0f0;padding:10px;border-radius:5px;margin:10px 0;"><div style="display:flex;justify-content:space-between;"><span>🚜 Equipos</span><strong>S/ '+p.apu.eq.toFixed(2)+' ('+eq+'%)</strong></div></div><div style="background:#f0f0f0;padding:10px;border-radius:5px;margin:10px 0;"><div style="display:flex;justify-content:space-between;"><span>📦 Materiales</span><strong>S/ '+p.apu.mat.toFixed(2)+' ('+ma+'%)</strong></div></div>';
+  document.getElementById('apuCont').innerHTML='<div class="apu"><div style="font-size:24px;font-weight:bold;">S/ '+p.p.toFixed(2)+'</div></div><div style="margin:10px 0;"><strong>'+p.cod+'</strong> '+p.nom+'</div><div style="background:#f0f0f0;padding:10px;border-radius:5px;margin:5px 0;"><div style="display:flex;justify-content:space-between;"><span>👷 MO</span><strong>S/ '+p.apu.mo.toFixed(2)+' ('+mo+'%)</strong></div></div><div style="background:#f0f0f0;padding:10px;border-radius:5px;margin:5px 0;"><div style="display:flex;justify-content:space-between;"><span>🚜 EQ</span><strong>S/ '+p.apu.eq.toFixed(2)+' ('+eq+'%)</strong></div></div><div style="background:#f0f0f0;padding:10px;border-radius:5px;margin:5px 0;"><div style="display:flex;justify-content:space-between;"><span>📦 MAT</span><strong>S/ '+p.apu.mat.toFixed(2)+' ('+ma+'%)</strong></div></div>';
   document.getElementById('apu').style.display='block';
 };
 
 function agregar(){
   const c=document.getElementById('sel').value;
   const m=parseFloat(document.getElementById('met').value);
-  if(!c||!m||m<=0){alert('⚠️ Selecciona partida e ingresa metrado');return;}
+  if(!c||!m||m<=0){alert('Selecciona partida e ingresa metrado');return;}
   const p=DB.find(x=>x.cod===c);
   if(!p)return;
   pres.push({cod:p.cod,nom:p.nom,u:p.u,met:m,p:p.p,par:m*p.p});
@@ -156,7 +154,7 @@ function agregar(){
 function actualizar(){
   const tb=document.getElementById('tb');
   if(pres.length===0){
-    tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:#999;padding:30px;">Sin partidas. Agrega arriba.</td></tr>';
+    tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:#999;padding:30px;">Sin partidas</td></tr>';
     document.getElementById('td1').textContent='S/ 0.00';
     document.getElementById('td2').textContent='S/ 0.00';
     document.getElementById('td3').textContent='S/ 0.00';
@@ -169,7 +167,7 @@ function actualizar(){
   let d=0;
   tb.innerHTML=pres.map((x,i)=>{
     d+=x.par;
-    return '<tr><td><strong>'+x.cod+'</strong> - '+x.nom+'</td><td>'+x.u+'</td><td>'+x.met.toFixed(2)+'</td><td>S/ '+x.p.toFixed(2)+'</td><td><strong>S/ '+x.par.toFixed(2)+'</strong></td><td><button onclick="eliminar('+i+')" style="width:auto;padding:8px 15px;font-size:12px;" class="btn-danger">❌</button></td></tr>';
+    return '<tr><td><strong>'+x.cod+'</strong> '+x.nom+'</td><td>'+x.u+'</td><td>'+x.met.toFixed(2)+'</td><td>S/ '+x.p.toFixed(2)+'</td><td><strong>S/ '+x.par.toFixed(2)+'</strong></td><td><button onclick="eliminar('+i+')" style="width:auto;padding:8px 15px;font-size:12px;" class="btn-danger">❌</button></td></tr>';
   }).join('');
   const gg=d*0.10;
   const ut=d*0.08;
@@ -191,14 +189,14 @@ function eliminar(i){
 }
 
 function limpiar(){
-  if(confirm('⚠️ ¿Borrar TODO?')){
+  if(confirm('¿Borrar TODO?')){
     pres=[];
     actualizar();
   }
 }
 
 function csv(){
-  if(pres.length===0){alert('⚠️ Agrega partidas');return;}
+  if(pres.length===0){alert('Agrega partidas');return;}
   let c='Código,Partida,Unidad,Metrado,P.U.,Parcial\n';
   let d=0;
   pres.forEach(x=>{
@@ -208,7 +206,7 @@ function csv(){
   const gg=d*0.10,ut=d*0.08,t=d+gg+ut;
   c+='\n,COSTO DIRECTO,,,,'+d.toFixed(2)+'\n';
   c+=',GG 10%,,,,'+gg.toFixed(2)+'\n';
-  c+=',Utilidad 8%,,,,'+ut.toFixed(2)+'\n';
+  c+=',Util 8%,,,,'+ut.toFixed(2)+'\n';
   c+=',TOTAL,,,,'+t.toFixed(2)+'\n';
   const b=new Blob([c],{type:'text/csv'});
   const a=document.createElement('a');
@@ -218,7 +216,7 @@ function csv(){
 }
 
 function pdf(){
-  alert('📄 Descarga CSV, ábrelo en Excel y exporta como PDF');
+  alert('Descarga CSV y ábrelo en Excel para exportar PDF');
 }
 
 cargar();
@@ -227,5 +225,5 @@ cargar();
 </html>
 """
 
-components.html(html, height=1300, scrolling=True)
+components.html(html_code, height=1300, scrolling=True)
 
