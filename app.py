@@ -1,5 +1,5 @@
 
-app_FUNCIONAL.py
+app.py
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -228,3 +228,4 @@ cargar();
 """
 
 components.html(html, height=1300, scrolling=True)
+
