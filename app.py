@@ -1,3 +1,12 @@
+import streamlit as st
+import streamlit.components.v1 as components
+
+st.set_page_config(
+    page_title="Calculadora Vial SEACE",
+    page_icon="🛣️",
+    layout="wide"
+)
+
 html_content = """
 <!DOCTYPE html>
 <html lang="en">
@@ -523,4 +532,3 @@ html_content = """
 """
 
 components.html(html_content, height=1200, scrolling=True)
-
