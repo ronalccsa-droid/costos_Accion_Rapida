@@ -13,81 +13,29 @@ html_content = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Vial SEACE - MTC 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Calculadora Vial SEACE</title>
     <style>
-        :root {
-            --bg-primary: #0a0e27;
-            --bg-secondary: #141b34;
-            --bg-card: #1a2238;
-            --bg-hover: #252e48;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --accent-blue: #3b82f6;
-            --accent-cyan: #06b6d4;
-            --accent-green: #10b981;
-            --accent-orange: #f59e0b;
-            --accent-red: #ef4444;
-            --border-color: #2d3548;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
-            --shadow-lg: 0 10px 25px rgba(0,0,0,0.5);
-            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 2rem;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1600px;
             margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            background: var(--gradient-primary);
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
             padding: 2rem;
-            border-radius: 16px;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0 C300,100 900,20 1200,80 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.05)"/></svg>') bottom;
-            background-size: cover;
-            opacity: 0.5;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         h1 {
+            color: #667eea;
             font-size: 2.5rem;
-            font-weight: 800;
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
@@ -95,426 +43,232 @@ html_content = """
         }
 
         .subtitle {
+            color: #64748b;
+            margin-bottom: 2rem;
             font-size: 1.1rem;
-            color: rgba(255,255,255,0.9);
-            font-weight: 500;
         }
 
-        /* Grid Layout */
-        .main-grid {
+        .grid {
             display: grid;
             grid-template-columns: 1fr 1fr 450px;
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        /* Cards */
         .card {
-            background: var(--bg-card);
+            background: white;
             border-radius: 12px;
-            padding: 1.75rem;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .card-icon {
-            font-size: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 2px solid #e2e8f0;
         }
 
         .card-title {
             font-size: 1.3rem;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        /* Form Elements */
-        select, input[type="text"], input[type="number"] {
+        select, input {
             width: 100%;
-            padding: 0.875rem 1rem;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 2px solid var(--border-color);
+            padding: 0.875rem;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
+            font-size: 1rem;
             margin-bottom: 1rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
         }
 
         select:focus, input:focus {
             outline: none;
-            border-color: var(--accent-blue);
-            background: var(--bg-hover);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        select:hover, input:hover {
-            border-color: var(--accent-cyan);
-        }
-
-        /* Buttons */
         button {
-            background: var(--gradient-accent);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 0.875rem 1.5rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
-            display: inline-flex;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.2s;
+            display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
         }
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
+        .btn-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
 
-        .btn-danger {
-            background: var(--accent-red);
-        }
-
-        .btn-success {
-            background: var(--accent-green);
-        }
-
-        .btn-warning {
-            background: var(--accent-orange);
-        }
-
-        /* Metrics */
-        .metrics-grid {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .metric-card {
-            background: var(--bg-secondary);
+        .metric {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             padding: 1.5rem;
             border-radius: 10px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .metric-card:hover {
-            background: var(--bg-hover);
-            transform: translateX(5px);
+            margin-bottom: 1rem;
+            border: 2px solid #bae6fd;
         }
 
         .metric-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            color: #0369a1;
+            font-size: 0.875rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             margin-bottom: 0.5rem;
         }
 
         .metric-value {
+            color: #0c4a6e;
             font-size: 2rem;
             font-weight: 800;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
-        /* Search Box */
-        .search-box {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-
-        .search-box input {
-            padding-left: 2.75rem;
-        }
-
-        .autocomplete {
-            position: absolute;
-            top: calc(100% + 0.5rem);
-            left: 0;
-            right: 0;
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            max-height: 350px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .autocomplete-item {
-            padding: 0.875rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.15s ease;
-            font-size: 0.9rem;
-        }
-
-        .autocomplete-item:last-child {
-            border-bottom: none;
-        }
-
-        .autocomplete-item:hover {
-            background: var(--bg-hover);
-            padding-left: 1.5rem;
-        }
-
-        /* Table */
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            overflow: hidden;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         th {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            padding: 1rem;
-            text-align: left;
+            background: #f8fafc;
+            color: #1e293b;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.875rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-        }
-
-        tbody tr {
-            background: var(--bg-card);
-            transition: all 0.2s ease;
         }
 
         tbody tr:hover {
-            background: var(--bg-hover);
+            background: #f8fafc;
         }
 
         tfoot tr {
-            background: var(--bg-secondary);
+            background: #f1f5f9;
             font-weight: 600;
         }
 
         tfoot tr:last-child {
-            background: var(--gradient-accent);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             font-weight: 700;
         }
 
-        /* APU Panel */
-        .apu-panel {
-            animation: slideInRight 0.3s ease;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .apu-header {
-            background: var(--bg-secondary);
-            padding: 1rem;
-            border-radius: 8px;
+        .apu-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
             margin-bottom: 1rem;
-            border-left: 4px solid var(--accent-blue);
         }
 
         .apu-price {
-            background: var(--gradient-accent);
-            padding: 1.5rem;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .apu-price-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 800;
-            color: white;
-            margin-bottom: 0.25rem;
         }
 
-        .apu-price-label {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.8);
-            font-weight: 600;
+        .apu-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
         }
 
-        .apu-breakdown {
-            margin-bottom: 1.25rem;
-        }
-
-        .apu-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .apu-item-name {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 600;
-        }
-
-        .apu-item-value {
-            font-weight: 700;
-            color: var(--accent-cyan);
-        }
-
-        .progress-bar {
-            background: var(--bg-secondary);
+        .progress {
+            background: rgba(255,255,255,0.2);
             height: 8px;
             border-radius: 4px;
             overflow: hidden;
-            margin-bottom: 0.25rem;
+            margin: 0.5rem 0;
         }
 
-        .progress-fill {
+        .progress-bar {
+            background: white;
             height: 100%;
-            border-radius: 4px;
-            transition: width 0.6s ease;
+            transition: width 0.5s;
         }
 
-        .progress-mo { background: var(--accent-green); }
-        .progress-eq { background: var(--accent-orange); }
-        .progress-mat { background: var(--accent-blue); }
-
-        .apu-percentage {
-            text-align: right;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        /* Action Buttons Row */
-        .action-buttons {
+        .action-btns {
             display: flex;
             gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+            margin-bottom: 1rem;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        .action-btns button {
+            flex: 1;
         }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
+        .autocomplete {
+            position: relative;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-blue);
+        .autocomplete-item {
+            padding: 0.875rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        /* Badge */
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: var(--accent-blue);
-            color: white;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-left: 0.5rem;
+        .autocomplete-item:hover {
+            background: #f8fafc;
         }
 
-        /* Responsive */
-        @media (max-width: 1400px) {
-            .main-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #64748b;
+        }
 
-            .card:last-child {
-                grid-column: 1 / -1;
-            }
+        @media (max-width: 1200px) {
+            .grid { grid-template-columns: 1fr 1fr; }
+            .card:last-child { grid-column: 1 / -1; }
         }
 
         @media (max-width: 768px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 1.75rem;
-            }
+            .grid { grid-template-columns: 1fr; }
+            .action-btns { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="header-content">
-                <h1>
-                    🛣️ Calculadora Presupuestos Vial
-                    <span class="badge">MTC 2026</span>
-                </h1>
-                <p class="subtitle">Base de datos oficial SEACE con 90+ partidas especializadas | Precios actualizados mercado peruano</p>
-            </div>
-        </div>
+        <h1>🛣️ Calculadora Vial SEACE</h1>
+        <p class="subtitle">Base de datos MTC 2026 con 90+ partidas oficiales | Precios actualizados</p>
 
-        <div class="main-grid">
-            <!-- Panel de Selección -->
+        <div class="grid">
             <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">📋</span>
-                    <h2 class="card-title">Selección de Partidas</h2>
-                </div>
-
+                <h2 class="card-title">📋 Selección de Partidas</h2>
                 <select id="categoria">
                     <option value="">📊 Todas las categorías</option>
                     <option value="preliminares">🏗️ Trabajos Preliminares</option>
@@ -525,76 +279,44 @@ html_content = """
                     <option value="obras_arte">🏛️ Obras de Arte</option>
                 </select>
 
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="buscar" placeholder="Buscar por código o descripción...">
-                    <div id="autocomplete" class="autocomplete"></div>
+                <div class="autocomplete">
+                    <input type="text" id="buscar" placeholder="🔍 Buscar partida...">
+                    <div id="autocompleteList" class="autocomplete-list"></div>
                 </div>
 
-                <select id="partida" size="8" style="height: 280px; margin-bottom: 1rem;">
-                    <option value="">Cargando partidas...</option>
-                </select>
-
-                <input type="number" id="metrado" placeholder="Ingrese metrado (cantidad)" min="0" step="0.01">
-                <button onclick="agregarPartida()" class="btn-success">
-                    <span>➕</span> Agregar al Presupuesto
-                </button>
+                <select id="partida" size="8" style="height: 280px;"></select>
+                <input type="number" id="metrado" placeholder="Metrado (cantidad)" min="0" step="0.01">
+                <button onclick="agregarPartida()" class="btn-success">➕ Agregar al Presupuesto</button>
             </div>
 
-            <!-- Panel de Métricas -->
             <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">💰</span>
-                    <h2 class="card-title">Resumen Financiero</h2>
+                <h2 class="card-title">💰 Resumen Financiero</h2>
+                <div class="metric">
+                    <div class="metric-label">💵 Costo Directo</div>
+                    <div class="metric-value" id="costoDirecto">S/ 0</div>
                 </div>
-
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <div class="metric-label">💵 Costo Directo</div>
-                        <div class="metric-value" id="costoDirecto">S/ 0</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-label">📊 Total + GG + Utilidad</div>
-                        <div class="metric-value" id="total">S/ 0</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-label">📦 Partidas Agregadas</div>
-                        <div class="metric-value" id="numPartidas">0</div>
-                    </div>
+                <div class="metric">
+                    <div class="metric-label">📊 Total + GG + Utilidad</div>
+                    <div class="metric-value" id="total">S/ 0</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">📦 Partidas</div>
+                    <div class="metric-value" id="numPartidas">0</div>
                 </div>
             </div>
 
-            <!-- Panel APU -->
-            <div class="card apu-panel" id="apuPanel" style="display: none;">
-                <div class="card-header">
-                    <span class="card-icon">🔍</span>
-                    <h2 class="card-title">Análisis de Precios Unitarios</h2>
-                </div>
-                <div id="apuContent">
-                    <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                        Selecciona una partida para ver su análisis detallado
-                    </p>
-                </div>
+            <div class="card" id="apuPanel" style="display: none;">
+                <h2 class="card-title">🔍 Análisis Unitario</h2>
+                <div id="apuContent"></div>
             </div>
         </div>
 
-        <!-- Tabla de Presupuesto -->
         <div class="card">
-            <div class="card-header">
-                <span class="card-icon">📊</span>
-                <h2 class="card-title">Presupuesto Detallado</h2>
-            </div>
-
-            <div class="action-buttons">
-                <button onclick="exportarCSV()" class="btn-success">
-                    <span>📥</span> Descargar CSV
-                </button>
-                <button onclick="exportarPDF()" class="btn-warning">
-                    <span>📄</span> Generar PDF
-                </button>
-                <button onclick="limpiar()" class="btn-danger">
-                    <span>🗑️</span> Limpiar Todo
-                </button>
+            <h2 class="card-title">📊 Presupuesto Detallado</h2>
+            <div class="action-btns">
+                <button onclick="exportarCSV()" class="btn-success">📥 Descargar CSV</button>
+                <button onclick="exportarPDF()" class="btn-warning">📄 Generar PDF</button>
+                <button onclick="limpiar()" class="btn-danger">🗑️ Limpiar Todo</button>
             </div>
 
             <table>
@@ -609,40 +331,20 @@ html_content = """
                     </tr>
                 </thead>
                 <tbody id="tbody">
-                    <tr>
-                        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
-                            No hay partidas agregadas. Comienza seleccionando partidas arriba.
-                        </td>
-                    </tr>
+                    <tr><td colspan="6" class="empty-state">No hay partidas. Comienza agregando arriba.</td></tr>
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td colspan="4"><strong>COSTO DIRECTO</strong></td>
-                        <td id="tdDirecto"><strong>S/ 0.00</strong></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">Gastos Generales (10%)</td>
-                        <td id="tdGG">S/ 0.00</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">Utilidad (8%)</td>
-                        <td id="tdUtil">S/ 0.00</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"><strong>TOTAL PRESUPUESTO</strong></td>
-                        <td id="tdTotal"><strong>S/ 0.00</strong></td>
-                        <td></td>
-                    </tr>
+                    <tr><td colspan="4">COSTO DIRECTO</td><td id="tdDirecto">S/ 0.00</td><td></td></tr>
+                    <tr><td colspan="4">Gastos Generales (10%)</td><td id="tdGG">S/ 0.00</td><td></td></tr>
+                    <tr><td colspan="4">Utilidad (8%)</td><td id="tdUtil">S/ 0.00</td><td></td></tr>
+                    <tr><td colspan="4">TOTAL PRESUPUESTO</td><td id="tdTotal">S/ 0.00</td><td></td></tr>
                 </tfoot>
             </table>
         </div>
     </div>
 
     <script>
-        const partidasDB = [
+        const partidas = [
             {cat:'preliminares',cod:'101.01',nombre:'Movilización y desmovilización equipos',unidad:'glb',precio:45000,apu:{mo:8500,eq:32000,mat:4500}},
             {cat:'preliminares',cod:'102.01',nombre:'Topografía y georeferenciación',unidad:'km',precio:2500,apu:{mo:1200,eq:900,mat:400}},
             {cat:'preliminares',cod:'103.01',nombre:'Campamento provisional obra',unidad:'mes',precio:12000,apu:{mo:4500,eq:2500,mat:5000}},
@@ -739,262 +441,195 @@ html_content = """
         let presupuesto = [];
 
         function cargarPartidas() {
+            const sel = document.getElementById('partida');
             const cat = document.getElementById('categoria').value;
-            const select = document.getElementById('partida');
-            select.innerHTML = '';
+            const filtradas = cat ? partidas.filter(p => p.cat === cat) : partidas;
 
-            const filtered = cat ? partidasDB.filter(p => p.cat === cat) : partidasDB;
-
-            if (filtered.length === 0) {
-                select.innerHTML = '<option value="">❌ No hay partidas disponibles</option>';
-                return;
-            }
-
-            filtered.forEach(p => {
-                const option = document.createElement('option');
-                option.value = p.cod;
-                option.textContent = `${p.cod} | ${p.nombre} | ${p.unidad} | S/ ${p.precio.toFixed(2)}`;
-                select.appendChild(option);
+            sel.innerHTML = '';
+            filtradas.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.cod;
+                opt.textContent = p.cod + ' - ' + p.nombre + ' (' + p.unidad + ') S/ ' + p.precio.toFixed(2);
+                sel.appendChild(opt);
             });
         }
 
-        document.getElementById('categoria').addEventListener('change', cargarPartidas);
+        document.getElementById('categoria').onchange = cargarPartidas;
 
-        const buscar = document.getElementById('buscar');
-        const autocomplete = document.getElementById('autocomplete');
+        document.getElementById('buscar').oninput = function() {
+            const q = this.value.toLowerCase();
+            const lista = document.getElementById('autocompleteList');
 
-        buscar.addEventListener('input', function() {
-            const query = this.value.toLowerCase();
-            if(query.length < 2) {
-                autocomplete.style.display = 'none';
+            if (q.length < 2) {
+                lista.style.display = 'none';
                 return;
             }
 
-            const results = partidasDB.filter(p => 
-                p.nombre.toLowerCase().includes(query) || 
-                p.cod.toLowerCase().includes(query)
-            );
+            const res = partidas.filter(p => p.nombre.toLowerCase().includes(q) || p.cod.toLowerCase().includes(q));
 
-            if(results.length > 0) {
-                autocomplete.innerHTML = results.slice(0, 8).map(p => 
-                    `<div class="autocomplete-item" onclick="seleccionarPartida('${p.cod}')">${p.cod} - ${p.nombre}</div>`
+            if (res.length > 0) {
+                lista.innerHTML = res.slice(0, 8).map(p => 
+                    '<div class="autocomplete-item" onclick="selPartida(\'' + p.cod + '\')">' + 
+                    p.cod + ' - ' + p.nombre + '</div>'
                 ).join('');
-                autocomplete.style.display = 'block';
+                lista.style.display = 'block';
             } else {
-                autocomplete.style.display = 'none';
+                lista.style.display = 'none';
             }
-        });
+        };
 
-        function seleccionarPartida(cod) {
+        function selPartida(cod) {
             document.getElementById('partida').value = cod;
             document.getElementById('buscar').value = '';
-            autocomplete.style.display = 'none';
+            document.getElementById('autocompleteList').style.display = 'none';
             mostrarAPU(cod);
         }
 
-        document.getElementById('partida').addEventListener('change', function() {
-            const cod = this.value;
-            if(cod) mostrarAPU(cod);
-        });
+        document.getElementById('partida').onchange = function() {
+            if (this.value) mostrarAPU(this.value);
+        };
 
         function mostrarAPU(cod) {
-            const partida = partidasDB.find(p => p.cod === cod);
-            if(!partida || !partida.apu) return;
+            const p = partidas.find(x => x.cod === cod);
+            if (!p) return;
 
-            const panel = document.getElementById('apuPanel');
-            const content = document.getElementById('apuContent');
+            const moP = ((p.apu.mo / p.precio) * 100).toFixed(1);
+            const eqP = ((p.apu.eq / p.precio) * 100).toFixed(1);
+            const matP = ((p.apu.mat / p.precio) * 100).toFixed(1);
 
-            const total = partida.precio;
-            const moPorc = ((partida.apu.mo / total) * 100).toFixed(1);
-            const eqPorc = ((partida.apu.eq / total) * 100).toFixed(1);
-            const matPorc = ((partida.apu.mat / total) * 100).toFixed(1);
+            document.getElementById('apuContent').innerHTML = 
+                '<div class="apu-box"><div class="apu-price">S/ ' + p.precio.toFixed(2) + 
+                '</div><div style="font-size:0.875rem;opacity:0.9;">Precio Unitario</div></div>' +
+                '<div><strong>' + p.cod + '</strong> - ' + p.nombre + '</div>' +
+                '<div style="color:#64748b;margin:0.5rem 0;">Unidad: ' + p.unidad + '</div>' +
+                '<div class="apu-item"><div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">' +
+                '<span>👷 Mano Obra</span><strong>S/ ' + p.apu.mo.toFixed(2) + '</strong></div>' +
+                '<div class="progress"><div class="progress-bar" style="width:' + moP + '%"></div></div>' +
+                '<div style="text-align:right;font-size:0.8rem;opacity:0.8;">' + moP + '%</div></div>' +
+                '<div class="apu-item"><div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">' +
+                '<span>🚜 Equipos</span><strong>S/ ' + p.apu.eq.toFixed(2) + '</strong></div>' +
+                '<div class="progress"><div class="progress-bar" style="width:' + eqP + '%"></div></div>' +
+                '<div style="text-align:right;font-size:0.8rem;opacity:0.8;">' + eqP + '%</div></div>' +
+                '<div class="apu-item"><div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">' +
+                '<span>📦 Materiales</span><strong>S/ ' + p.apu.mat.toFixed(2) + '</strong></div>' +
+                '<div class="progress"><div class="progress-bar" style="width:' + matP + '%"></div></div>' +
+                '<div style="text-align:right;font-size:0.8rem;opacity:0.8;">' + matP + '%</div></div>';
 
-            content.innerHTML = `
-                <div class="apu-header">
-                    <strong style="color: var(--accent-cyan); font-size: 1.1rem;">${partida.cod}</strong>
-                    <div style="color: var(--text-primary); margin-top: 0.5rem; font-weight: 500;">${partida.nombre}</div>
-                    <div style="color: var(--text-muted); margin-top: 0.25rem; font-size: 0.9rem;">Unidad: ${partida.unidad}</div>
-                </div>
-
-                <div class="apu-price">
-                    <div class="apu-price-value">S/ ${total.toFixed(2)}</div>
-                    <div class="apu-price-label">Precio Unitario Total</div>
-                </div>
-
-                <div class="apu-breakdown">
-                    <div class="apu-item-header">
-                        <span class="apu-item-name">👷 Mano de Obra</span>
-                        <span class="apu-item-value">S/ ${partida.apu.mo.toFixed(2)}</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-mo" style="width: ${moPorc}%;"></div>
-                    </div>
-                    <div class="apu-percentage">${moPorc}%</div>
-                </div>
-
-                <div class="apu-breakdown">
-                    <div class="apu-item-header">
-                        <span class="apu-item-name">🚜 Equipos</span>
-                        <span class="apu-item-value">S/ ${partida.apu.eq.toFixed(2)}</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-eq" style="width: ${eqPorc}%;"></div>
-                    </div>
-                    <div class="apu-percentage">${eqPorc}%</div>
-                </div>
-
-                <div class="apu-breakdown">
-                    <div class="apu-item-header">
-                        <span class="apu-item-name">📦 Materiales</span>
-                        <span class="apu-item-value">S/ ${partida.apu.mat.toFixed(2)}</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-mat" style="width: ${matPorc}%;"></div>
-                    </div>
-                    <div class="apu-percentage">${matPorc}%</div>
-                </div>
-            `;
-
-            panel.style.display = 'block';
+            document.getElementById('apuPanel').style.display = 'block';
         }
 
         function agregarPartida() {
             const cod = document.getElementById('partida').value;
-            const metrado = parseFloat(document.getElementById('metrado').value);
+            const met = parseFloat(document.getElementById('metrado').value);
 
-            if(!cod || !metrado || metrado <= 0) {
-                alert('⚠️ Selecciona una partida e ingresa un metrado válido mayor a 0');
+            if (!cod || !met || met <= 0) {
+                alert('⚠️ Selecciona partida e ingresa metrado válido');
                 return;
             }
 
-            const partida = partidasDB.find(p => p.cod === cod);
-            if (!partida) {
-                alert('⚠️ Partida no encontrada en la base de datos');
-                return;
-            }
-
-            const parcial = metrado * partida.precio;
+            const p = partidas.find(x => x.cod === cod);
+            if (!p) return;
 
             presupuesto.push({
-                cod: partida.cod,
-                nombre: partida.nombre,
-                unidad: partida.unidad,
-                metrado: metrado,
-                precio: partida.precio,
-                parcial: parcial
+                cod: p.cod,
+                nombre: p.nombre,
+                unidad: p.unidad,
+                metrado: met,
+                precio: p.precio,
+                parcial: met * p.precio
             });
 
             document.getElementById('metrado').value = '';
-            renderizarTabla();
+            actualizar();
         }
 
-        function renderizarTabla() {
-            const tbody = document.getElementById('tbody');
-            tbody.innerHTML = '';
+        function actualizar() {
+            const tb = document.getElementById('tbody');
 
             if (presupuesto.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
-                            No hay partidas agregadas. Comienza seleccionando partidas arriba.
-                        </td>
-                    </tr>
-                `;
-                actualizarTotales(0);
+                tb.innerHTML = '<tr><td colspan="6" class="empty-state">No hay partidas. Comienza agregando arriba.</td></tr>';
+                document.getElementById('tdDirecto').textContent = 'S/ 0.00';
+                document.getElementById('tdGG').textContent = 'S/ 0.00';
+                document.getElementById('tdUtil').textContent = 'S/ 0.00';
+                document.getElementById('tdTotal').textContent = 'S/ 0.00';
+                document.getElementById('costoDirecto').textContent = 'S/ 0';
+                document.getElementById('total').textContent = 'S/ 0';
+                document.getElementById('numPartidas').textContent = '0';
                 return;
             }
 
-            let directo = 0;
-            presupuesto.forEach((p, idx) => {
-                directo += p.parcial;
-                tbody.innerHTML += `
-                    <tr>
-                        <td><strong>${p.cod}</strong> - ${p.nombre}</td>
-                        <td>${p.unidad}</td>
-                        <td>${p.metrado.toFixed(2)}</td>
-                        <td>S/ ${p.precio.toFixed(2)}</td>
-                        <td><strong>S/ ${p.parcial.toFixed(2)}</strong></td>
-                        <td>
-                            <button onclick="eliminar(${idx})" class="btn-danger" style="padding: 0.5rem 1rem;">
-                                ❌ Eliminar
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
+            let dir = 0;
+            tb.innerHTML = presupuesto.map((p, i) => {
+                dir += p.parcial;
+                return '<tr><td><strong>' + p.cod + '</strong> - ' + p.nombre + '</td><td>' + 
+                    p.unidad + '</td><td>' + p.metrado.toFixed(2) + '</td><td>S/ ' + 
+                    p.precio.toFixed(2) + '</td><td><strong>S/ ' + p.parcial.toFixed(2) + 
+                    '</strong></td><td><button onclick="eliminar(' + i + 
+                    ')" style="width:auto;padding:0.5rem 1rem;" class="btn-danger">❌</button></td></tr>';
+            }).join('');
 
-            actualizarTotales(directo);
-        }
+            const gg = dir * 0.10;
+            const ut = dir * 0.08;
+            const tot = dir + gg + ut;
 
-        function actualizarTotales(directo) {
-            const gg = directo * 0.10;
-            const util = directo * 0.08;
-            const total = directo + gg + util;
-
-            document.getElementById('tdDirecto').innerHTML = `<strong>S/ ${directo.toFixed(2)}</strong>`;
-            document.getElementById('tdGG').textContent = `S/ ${gg.toFixed(2)}`;
-            document.getElementById('tdUtil').textContent = `S/ ${util.toFixed(2)}`;
-            document.getElementById('tdTotal').innerHTML = `<strong>S/ ${total.toFixed(2)}</strong>`;
-
-            document.getElementById('costoDirecto').textContent = `S/ ${directo.toLocaleString('es-PE', {maximumFractionDigits: 0})}`;
-            document.getElementById('total').textContent = `S/ ${total.toLocaleString('es-PE', {maximumFractionDigits: 0})}`;
+            document.getElementById('tdDirecto').textContent = 'S/ ' + dir.toFixed(2);
+            document.getElementById('tdGG').textContent = 'S/ ' + gg.toFixed(2);
+            document.getElementById('tdUtil').textContent = 'S/ ' + ut.toFixed(2);
+            document.getElementById('tdTotal').textContent = 'S/ ' + tot.toFixed(2);
+            document.getElementById('costoDirecto').textContent = 'S/ ' + Math.round(dir).toLocaleString('es-PE');
+            document.getElementById('total').textContent = 'S/ ' + Math.round(tot).toLocaleString('es-PE');
             document.getElementById('numPartidas').textContent = presupuesto.length;
         }
 
-        function eliminar(idx) {
-            if (confirm('¿Eliminar esta partida del presupuesto?')) {
-                presupuesto.splice(idx, 1);
-                renderizarTabla();
+        function eliminar(i) {
+            if (confirm('¿Eliminar esta partida?')) {
+                presupuesto.splice(i, 1);
+                actualizar();
             }
         }
 
         function limpiar() {
-            if(confirm('⚠️ ¿Estás seguro de borrar TODO el presupuesto? Esta acción no se puede deshacer.')) {
+            if (confirm('⚠️ ¿Borrar TODO el presupuesto?')) {
                 presupuesto = [];
-                renderizarTabla();
+                actualizar();
             }
         }
 
         function exportarCSV() {
-            if(presupuesto.length === 0) {
-                alert('⚠️ Agrega al menos una partida antes de exportar');
+            if (presupuesto.length === 0) {
+                alert('⚠️ Agrega partidas antes de exportar');
                 return;
             }
 
-            let csv = 'Código,Partida,Unidad,Metrado,P.U. (S/),Parcial (S/)\n';
+            let csv = 'Código,Partida,Unidad,Metrado,P.U.,Parcial\n';
+            let dir = 0;
             presupuesto.forEach(p => {
-                csv += `${p.cod},"${p.nombre}",${p.unidad},${p.metrado},${p.precio},${p.parcial}\n`;
+                csv += p.cod + ',"' + p.nombre + '",' + p.unidad + ',' + p.metrado + ',' + p.precio + ',' + p.parcial + '\n';
+                dir += p.parcial;
             });
 
-            const directo = presupuesto.reduce((sum, p) => sum + p.parcial, 0);
-            const gg = directo * 0.10;
-            const util = directo * 0.08;
-            const total = directo + gg + util;
+            const gg = dir * 0.10;
+            const ut = dir * 0.08;
+            const tot = dir + gg + ut;
 
-            csv += `\n,COSTO DIRECTO,,,,${directo.toFixed(2)}\n`;
-            csv += `,Gastos Generales (10%),,,,${gg.toFixed(2)}\n`;
-            csv += `,Utilidad (8%),,,,${util.toFixed(2)}\n`;
-            csv += `,TOTAL PRESUPUESTO,,,,${total.toFixed(2)}\n`;
+            csv += '\n,COSTO DIRECTO,,,,'+dir.toFixed(2)+'\n';
+            csv += ',Gastos Generales 10%,,,,'+gg.toFixed(2)+'\n';
+            csv += ',Utilidad 8%,,,,'+ut.toFixed(2)+'\n';
+            csv += ',TOTAL PRESUPUESTO,,,,'+tot.toFixed(2)+'\n';
 
-            const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
-            const url = URL.createObjectURL(blob);
+            const blob = new Blob([csv], {type: 'text/csv'});
             const a = document.createElement('a');
-            a.href = url;
-            const fecha = new Date().toISOString().split('T')[0];
-            a.download = `presupuesto_vial_SEACE_${fecha}.csv`;
+            a.href = URL.createObjectURL(blob);
+            a.download = 'presupuesto_' + new Date().toISOString().split('T')[0] + '.csv';
             a.click();
-            URL.revokeObjectURL(url);
         }
 
         function exportarPDF() {
-            alert('📄 Exportación PDF en desarrollo.\n\nPor ahora:\n1. Descarga el CSV\n2. Ábrelo en Excel/Google Sheets\n3. Exporta como PDF desde ahí');
+            alert('📄 Para PDF:\n1. Descarga CSV\n2. Abre en Excel\n3. Exporta como PDF');
         }
 
-        // Inicializar
-        window.addEventListener('load', function() {
-            cargarPartidas();
-            renderizarTabla();
-        });
+        cargarPartidas();
+        actualizar();
     </script>
 </body>
 </html>
