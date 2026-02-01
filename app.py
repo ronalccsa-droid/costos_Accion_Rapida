@@ -1,12 +1,3 @@
-import streamlit as st
-import streamlit.components.v1 as components
-
-st.set_page_config(
-    page_title="Calculadora Vial SEACE",
-    page_icon="🛣️",
-    layout="wide"
-)
-
 html_content = """
 <!DOCTYPE html>
 <html lang="en">
@@ -121,7 +112,7 @@ html_content = """
                     <option value="señalizacion">Señalización</option>
                     <option value="obras_arte">Obras de Arte</option>
                 </select>
-                
+
                 <div class="search-box">
                     <input type="text" id="buscar" placeholder="🔍 Buscar partida por nombre...">
                     <div id="autocomplete" class="autocomplete"></div>
@@ -130,7 +121,7 @@ html_content = """
                 <select id="partida" size="10" style="height: 300px;">
                     <option value="">Selecciona partidas...</option>
                 </select>
-                
+
                 <input type="number" id="metrado" placeholder="Metrado (cantidad)" min="0" step="0.01">
                 <button onclick="agregarPartida()">➕ Agregar al Presupuesto</button>
             </div>
@@ -164,7 +155,7 @@ html_content = """
             <button onclick="exportarCSV()">📥 Descargar CSV</button>
             <button onclick="exportarPDF()">📄 Generar PDF</button>
             <button onclick="limpiar()">🗑️ Limpiar Todo</button>
-            
+
             <table id="tablaPresupuesto">
                 <thead>
                     <tr>
@@ -212,7 +203,7 @@ html_content = """
             {cat: 'preliminares', cod: '104.01', nombre: 'Cartel obra 3.60x7.20m', unidad: 'und', precio: 3500, apu: {mo: 450, eq: 250, mat: 2800}},
             {cat: 'preliminares', cod: '105.01', nombre: 'Mantenimiento tránsito temporal', unidad: 'mes', precio: 8500, apu: {mo: 5200, eq: 1800, mat: 1500}},
             {cat: 'preliminares', cod: '106.01', nombre: 'Nivelación y replanteo', unidad: 'km', precio: 1800, apu: {mo: 950, eq: 600, mat: 250}},
-            
+
             // MOVIMIENTO TIERRAS
             {cat: 'movimiento', cod: '201.01', nombre: 'Desbroce y limpieza', unidad: 'ha', precio: 8500, apu: {mo: 2800, eq: 5200, mat: 500}},
             {cat: 'movimiento', cod: '202.01', nombre: 'Excavación no clasificada', unidad: 'm³', precio: 18.50, apu: {mo: 4.20, eq: 13.80, mat: 0.50}},
@@ -226,7 +217,7 @@ html_content = """
             {cat: 'movimiento', cod: '209.01', nombre: 'Relleno compactado material propio', unidad: 'm³', precio: 28.50, apu: {mo: 7.20, eq: 19.80, mat: 1.50}},
             {cat: 'movimiento', cod: '210.01', nombre: 'Corte en material suelto', unidad: 'm³', precio: 15.80, apu: {mo: 3.50, eq: 11.80, mat: 0.50}},
             {cat: 'movimiento', cod: '211.01', nombre: 'Escarificado 0.20m', unidad: 'm²', precio: 2.80, apu: {mo: 0.60, eq: 2.10, mat: 0.10}},
-            
+
             // PAVIMENTOS
             {cat: 'pavimentos', cod: '401.01', nombre: 'Capa anticontaminante e=0.15m', unidad: 'm³', precio: 35.00, apu: {mo: 8.50, eq: 14.50, mat: 12.00}},
             {cat: 'pavimentos', cod: '402.01', nombre: 'Sub-base granular e=0.20m', unidad: 'm³', precio: 72.50, apu: {mo: 15.80, eq: 28.70, mat: 28.00}},
@@ -256,7 +247,7 @@ html_content = """
             {cat: 'pavimentos', cod: '425.01', nombre: 'Reciclado in-situ base granular', unidad: 'm³', precio: 45.00, apu: {mo: 9.50, eq: 28.50, mat: 7.00}},
             {cat: 'pavimentos', cod: '426.01', nombre: 'Estabilización suelos cemento', unidad: 'm³', precio: 95.00, apu: {mo: 18.00, eq: 35.00, mat: 42.00}},
             {cat: 'pavimentos', cod: '427.01', nombre: 'Capa nivelación asfalto emulsión', unidad: 'm³', precio: 520.00, apu: {mo: 85.00, eq: 180.00, mat: 255.00}},
-            
+
             // DRENAJE
             {cat: 'drenaje', cod: '501.01', nombre: 'Excavación estructuras material común', unidad: 'm³', precio: 28.00, apu: {mo: 6.50, eq: 20.00, mat: 1.50}},
             {cat: 'drenaje', cod: '502.01', nombre: 'Excavación estructuras en roca', unidad: 'm³', precio: 55.00, apu: {mo: 11.00, eq: 40.00, mat: 4.00}},
@@ -274,7 +265,7 @@ html_content = """
             {cat: 'drenaje', cod: '513.01', nombre: 'Cunetas profundas triangulares', unidad: 'm', precio: 15.50, apu: {mo: 4.20, eq: 9.80, mat: 1.50}},
             {cat: 'drenaje', cod: '514.01', nombre: 'Canal alivio concreto 0.40x0.40m', unidad: 'm', precio: 95.00, apu: {mo: 28.50, eq: 15.50, mat: 51.00}},
             {cat: 'drenaje', cod: '515.01', nombre: 'Sumideros rejilla HF 0.60x0.60m', unidad: 'und', precio: 850.00, apu: {mo: 280.00, eq: 120.00, mat: 450.00}},
-            
+
             // OBRAS DE ARTE
             {cat: 'obras_arte', cod: '601.01', nombre: 'Mampostería piedra', unidad: 'm³', precio: 280.00, apu: {mo: 95.00, eq: 35.00, mat: 150.00}},
             {cat: 'obras_arte', cod: '602.01', nombre: 'Muro concreto ciclopeo fc=175+30%PG', unidad: 'm³', precio: 320.00, apu: {mo: 105.00, eq: 45.00, mat: 170.00}},
@@ -290,7 +281,7 @@ html_content = """
             {cat: 'obras_arte', cod: '610.01', nombre: 'Protección taludes semilla+fertilizante', unidad: 'm²', precio: 8.50, apu: {mo: 2.80, eq: 1.50, mat: 4.20}},
             {cat: 'obras_arte', cod: '611.01', nombre: 'Concreto lanzado shotcrete e=5cm', unidad: 'm²', precio: 85.00, apu: {mo: 22.00, eq: 28.00, mat: 35.00}},
             {cat: 'obras_arte', cod: '612.01', nombre: 'Anclajes terreno 3m Ø1"', unidad: 'und', precio: 280.00, apu: {mo: 85.00, eq: 95.00, mat: 100.00}},
-            
+
             // SEÑALIZACION
             {cat: 'señalizacion', cod: '801.01', nombre: 'Señal vertical reglamentaria 0.60x0.60m', unidad: 'und', precio: 280.00, apu: {mo: 52.00, eq: 28.00, mat: 200.00}},
             {cat: 'señalizacion', cod: '801.02', nombre: 'Señal vertical preventiva 0.75x0.75m', unidad: 'und', precio: 320.00, apu: {mo: 58.00, eq: 32.00, mat: 230.00}},
@@ -315,7 +306,7 @@ html_content = """
             const cat = this.value;
             const select = document.getElementById('partida');
             select.innerHTML = '<option value="">Selecciona partida...</option>';
-            
+
             const filtered = cat ? partidasDB.filter(p => p.cat === cat) : partidasDB;
             filtered.forEach(p => {
                 select.innerHTML += `<option value="${p.cod}">${p.cod} - ${p.nombre} (${p.unidad}) - S/ ${p.precio.toFixed(2)}</option>`;
@@ -324,19 +315,19 @@ html_content = """
 
         const buscar = document.getElementById('buscar');
         const autocomplete = document.getElementById('autocomplete');
-        
+
         buscar.addEventListener('input', function() {
             const query = this.value.toLowerCase();
             if(query.length < 2) {
                 autocomplete.style.display = 'none';
                 return;
             }
-            
+
             const results = partidasDB.filter(p => 
                 p.nombre.toLowerCase().includes(query) || 
                 p.cod.toLowerCase().includes(query)
             );
-            
+
             if(results.length > 0) {
                 autocomplete.innerHTML = results.slice(0, 8).map(p => 
                     `<div onclick="seleccionarPartida('${p.cod}')">${p.cod} - ${p.nombre}</div>`
@@ -362,27 +353,27 @@ html_content = """
         function mostrarAPU(cod) {
             const partida = partidasDB.find(p => p.cod === cod);
             if(!partida || !partida.apu) return;
-            
+
             const panel = document.getElementById('apuPanel');
             const content = document.getElementById('apuContent');
-            
+
             const total = partida.precio;
             const moPorc = ((partida.apu.mo / total) * 100).toFixed(1);
             const eqPorc = ((partida.apu.eq / total) * 100).toFixed(1);
             const matPorc = ((partida.apu.mat / total) * 100).toFixed(1);
-            
+
             content.innerHTML = `
                 <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border);">
                     <strong style="color: var(--color-accent); font-size: 1rem;">${partida.cod}</strong>
                     <div style="color: var(--color-text); margin-top: 0.3rem;">${partida.nombre}</div>
                     <div style="color: #94a3b8; margin-top: 0.3rem;">Unidad: ${partida.unidad}</div>
                 </div>
-                
+
                 <div style="background: var(--color-bg); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
                     <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-accent);">S/ ${total.toFixed(2)}</div>
                     <div style="color: #94a3b8; font-size: 0.85rem;">Precio Unitario Total</div>
                 </div>
-                
+
                 <div style="margin-bottom: 0.8rem;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
                         <span>👷 Mano Obra</span>
@@ -393,7 +384,7 @@ html_content = """
                     </div>
                     <div style="text-align: right; color: #94a3b8; font-size: 0.8rem; margin-top: 0.2rem;">${moPorc}%</div>
                 </div>
-                
+
                 <div style="margin-bottom: 0.8rem;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
                         <span>🚜 Equipos</span>
@@ -404,7 +395,7 @@ html_content = """
                     </div>
                     <div style="text-align: right; color: #94a3b8; font-size: 0.8rem; margin-top: 0.2rem;">${eqPorc}%</div>
                 </div>
-                
+
                 <div style="margin-bottom: 0.8rem;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
                         <span>📦 Materiales</span>
@@ -416,22 +407,22 @@ html_content = """
                     <div style="text-align: right; color: #94a3b8; font-size: 0.8rem; margin-top: 0.2rem;">${matPorc}%</div>
                 </div>
             `;
-            
+
             panel.style.display = 'block';
         }
 
         function agregarPartida() {
             const cod = document.getElementById('partida').value;
             const metrado = parseFloat(document.getElementById('metrado').value);
-            
-            if(!cod || !metrado) {
-                alert('Selecciona partida e ingresa metrado');
+
+            if(!cod || !metrado || metrado <= 0) {
+                alert('⚠️ Selecciona una partida e ingresa un metrado válido');
                 return;
             }
-            
+
             const partida = partidasDB.find(p => p.cod === cod);
             const parcial = metrado * partida.precio;
-            
+
             presupuesto.push({
                 cod: partida.cod,
                 nombre: partida.nombre,
@@ -440,7 +431,7 @@ html_content = """
                 precio: partida.precio,
                 parcial: parcial
             });
-            
+
             document.getElementById('metrado').value = '';
             renderizarTabla();
         }
@@ -448,7 +439,7 @@ html_content = """
         function renderizarTabla() {
             const tbody = document.getElementById('tbody');
             tbody.innerHTML = '';
-            
+
             let directo = 0;
             presupuesto.forEach((p, idx) => {
                 directo += p.parcial;
@@ -463,16 +454,16 @@ html_content = """
                     </tr>
                 `;
             });
-            
+
             const gg = directo * 0.10;
             const util = directo * 0.08;
             const total = directo + gg + util;
-            
+
             document.getElementById('tdDirecto').textContent = `S/ ${directo.toFixed(2)}`;
             document.getElementById('tdGG').textContent = `S/ ${gg.toFixed(2)}`;
             document.getElementById('tdUtil').textContent = `S/ ${util.toFixed(2)}`;
             document.getElementById('tdTotal').textContent = `S/ ${total.toFixed(2)}`;
-            
+
             document.getElementById('costoDirecto').textContent = `S/ ${directo.toLocaleString('es-PE', {maximumFractionDigits: 0})}`;
             document.getElementById('total').textContent = `S/ ${total.toLocaleString('es-PE', {maximumFractionDigits: 0})}`;
             document.getElementById('numPartidas').textContent = presupuesto.length;
@@ -491,37 +482,45 @@ html_content = """
         }
 
         function exportarCSV() {
-            let csv = 'Código,Partida,Unidad,Metrado,P.U.,Parcial\\n';
+            if(presupuesto.length === 0) {
+                alert('⚠️ Agrega partidas antes de exportar');
+                return;
+            }
+
+            let csv = 'Código,Partida,Unidad,Metrado,P.U.,Parcial\n';
             presupuesto.forEach(p => {
-                csv += `${p.cod},"${p.nombre}",${p.unidad},${p.metrado},${p.precio},${p.parcial}\\n`;
+                csv += `${p.cod},"${p.nombre}",${p.unidad},${p.metrado},${p.precio},${p.parcial}\n`;
             });
-            
+
             const directo = presupuesto.reduce((sum, p) => sum + p.parcial, 0);
             const gg = directo * 0.10;
             const util = directo * 0.08;
             const total = directo + gg + util;
-            
-            csv += `\\n,COSTO DIRECTO,,,,${directo.toFixed(2)}\\n`;
-            csv += `,Gastos Generales 10%,,,,${gg.toFixed(2)}\\n`;
-            csv += `,Utilidad 8%,,,,${util.toFixed(2)}\\n`;
-            csv += `,TOTAL PRESUPUESTO,,,,${total.toFixed(2)}\\n`;
-            
-            const blob = new Blob([csv], {type: 'text/csv'});
+
+            csv += `\n,COSTO DIRECTO,,,,${directo.toFixed(2)}\n`;
+            csv += `,Gastos Generales 10%,,,,${gg.toFixed(2)}\n`;
+            csv += `,Utilidad 8%,,,,${util.toFixed(2)}\n`;
+            csv += `,TOTAL PRESUPUESTO,,,,${total.toFixed(2)}\n`;
+
+            const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'presupuesto_vial_seace.csv';
+            a.download = `presupuesto_vial_${new Date().toISOString().split('T')[0]}.csv`;
             a.click();
+            URL.revokeObjectURL(url);
         }
 
         function exportarPDF() {
-            alert('📄 Para PDF profesional: Usa reportlab en Python Streamlit. Esta versión HTML exporta CSV. Si necesitas PDF con gráficos, implementa jsPDF o backend Python.');
+            alert('📄 Función PDF en desarrollo. Por ahora usa la exportación CSV y convierte a PDF en Excel/Google Sheets.');
         }
 
+        // Inicializar con todas las partidas
         document.getElementById('categoria').dispatchEvent(new Event('change'));
     </script>
 </body>
 </html>
 """
 
-components.html(html_content, height=1400, scrolling=True)
+components.html(html_content, height=1200, scrolling=True)
+
